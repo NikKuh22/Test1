@@ -18,8 +18,8 @@ final class MoviesViewController: UIViewController {
     @IBAction func addButton(_ sender: UIButton) {
         guard titleTextField.text?.isEmpty == false && yearTextField.text?.isEmpty == false else
         { return }
-        let title = titleTextField.text
-        let year = yearTextField.text
+        let title = titleTextField.text ?? ""
+        let year = Int(yearTextField.text ?? "") ?? 0
         
         addMovieInTableView(title: title, year: year)
     }
@@ -58,20 +58,20 @@ extension MoviesViewController: UITextFieldDelegate {
 }
 
 extension MoviesViewController {
-    func alert(str: String) {
-        let alert = UIAlertController(title: "Oops...", message: "\(str) is already on the list", preferredStyle: .alert)
+    func alert(movie: String) {
+        let alert = UIAlertController(title: "Oops...", message: "\(movie) is already on the list", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default))
         self.present(alert, animated: true)
     }
     
     
-    func addMovieInTableView(title: String?, year: String?) {
-        let str = "\(title ?? "") \(year ?? "")"
-        guard movieTitleAndYearModel.contains(str) == false else {
-            alert(str: str);
+    func addMovieInTableView(title: String, year: Int) {
+        let movie = "\(title) \(year)"
+        guard movieTitleAndYearModel.contains(movie) == false else {
+            alert(movie: movie);
             return }
         
-        movieTitleAndYearModel.append(str)
+        movieTitleAndYearModel.append(movie)
         
         tableView.reloadData()
         titleTextField.text = ""

@@ -60,7 +60,7 @@
 		3A2DA82328BF5F3D003FE59A /* Test1 */ = {
 			isa = PBXGroup;
 			children = (
-				3A2DA83928BF5FEC003FE59A /* ViewController */,
+				3A2DA83928BF5FEC003FE59A /* MoviesViewController */,
 				3A2DA83828BF5FE2003FE59A /* Support File */,
 				3A2DA82A28BF5F3D003FE59A /* Main.storyboard */,
 				3A2DA82F28BF5F40003FE59A /* LaunchScreen.storyboard */,
@@ -79,13 +79,13 @@
 			path = "Support File";
 			sourceTree = "<group>";
 		};
-		3A2DA83928BF5FEC003FE59A /* ViewController */ = {
+		3A2DA83928BF5FEC003FE59A /* MoviesViewController */ = {
 			isa = PBXGroup;
 			children = (
 				3A2DA82828BF5F3D003FE59A /* MoviesViewController.swift */,
 				3A2DA83D28BF688D003FE59A /* MoviesTableViewCell */,
 			);
-			path = ViewController;
+			path = MoviesViewController;
 			sourceTree = "<group>";
 		};
 		3A2DA83D28BF688D003FE59A /* MoviesTableViewCell */ = {
