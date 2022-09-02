@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  Test1
 //
-//  Created by Никита Анонимов on 31.08.2022.
+//  Created by Nikita Kukharchuk on 31.08.2022.
 //
 
 import UIKit
