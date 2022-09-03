@@ -11,7 +11,7 @@ class MoviesTableViewCell: UITableViewCell {
 
     @IBOutlet var movieTitleAndYearLabel: UILabel!
 
-    func config(model: String) {
-        movieTitleAndYearLabel.text = model
+    func config(model: MovieModel) {
+        movieTitleAndYearLabel.text = "\(model.title) \(model.year)"
     }
 }

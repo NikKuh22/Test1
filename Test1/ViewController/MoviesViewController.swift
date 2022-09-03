@@ -7,45 +7,42 @@
 
 import UIKit
 
+enum Section {
+    case main
+}
+
 final class MoviesViewController: UIViewController {
     
     @IBOutlet private var titleTextField: UITextField!
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var yearTextField: UITextField!
     
-    var movieTitleAndYearModel = [String]()
+    private var data = [MovieModel]()
     
-    @IBAction func addButton(_ sender: UIButton) {
+    var dataSource: UITableViewDiffableDataSource<Section, MovieModel>!
+    
+    @IBAction private func addButton(_ sender: UIButton) {
         guard titleTextField.text?.isEmpty == false && yearTextField.text?.isEmpty == false else
         { return }
         let title = titleTextField.text ?? ""
         let year = Int(yearTextField.text ?? "") ?? 0
         
         addMovieInTableView(title: title, year: year)
+        
+        createSnapshot()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
         yearTextField.delegate = self
         
         tableView.register(
             UINib(nibName: "MoviesTableViewCell", bundle: .main),
             forCellReuseIdentifier: "MoviesTableViewCell")
+        
+        configureDataSource()
     }
 
-}
-
-extension MoviesViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MoviesTableViewCell", for: indexPath) as! MoviesTableViewCell
-        cell.config(model: movieTitleAndYearModel[indexPath.row])
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        movieTitleAndYearModel.count
-    }
 }
 
 extension MoviesViewController: UITextFieldDelegate {
@@ -66,16 +63,31 @@ extension MoviesViewController {
     
     
     func addMovieInTableView(title: String, year: Int) {
-        let movie = "\(title) \(year)"
-        guard movieTitleAndYearModel.contains(movie) == false else {
-            alert(movie: movie);
-            return }
+        let obb = MovieModel(title: title, year: year)
+        guard data.contains(where: { $0.title == obb.title }) == false else {
+            alert(movie: obb.title);
+            return
+        }
         
-        movieTitleAndYearModel.append(movie)
+        data.append(obb)
         
-        tableView.reloadData()
         titleTextField.text = ""
         yearTextField.text = ""
+    }
+    
+    func configureDataSource() {
+        dataSource = UITableViewDiffableDataSource<Section, MovieModel>(tableView: tableView, cellProvider: { tableView, indexPath, itemIdentifier in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MoviesTableViewCell", for: indexPath) as! MoviesTableViewCell
+            cell.config(model: self.data[indexPath.row])
+            return cell
+        })
+    }
+    
+    func createSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, MovieModel>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(data)
+        dataSource.apply(snapshot)
     }
 }
 
